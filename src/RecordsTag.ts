@@ -7,6 +7,8 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {BulkUpdateRequest} from "./BulkUpdateRequest";
+import {BulkUpdateResponse} from "./BulkUpdateResponse";
 import {Record} from "./Record";
 import {RecordCollection} from "./RecordCollection";
 
@@ -138,6 +140,44 @@ export class RecordsTag extends TagAbstract {
     }
 
     /**
+     * Updates up to 10 records, or upserts them when performUpsert is set.
+     *
+     * @returns {Promise<BulkUpdateResponse>}
+     * @throws {ClientException}
+     */
+    public async replaceAll(baseId: string, tableIdOrName: string, payload: BulkUpdateRequest): Promise<BulkUpdateResponse> {
+        const url = this.parser.url('/v0/:baseId/:tableIdOrName', {
+            'baseId': baseId,
+            'tableIdOrName': tableIdOrName,
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'PUT',
+            params: this.parser.query({
+            }, [
+            ]),
+            data: payload
+        };
+
+        try {
+            const response = await this.httpClient.request<BulkUpdateResponse>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
      * Updates a single record. Table names and table ids can be used interchangeably. We recommend using table IDs so you don't need to modify your API request when your table name changes.
      *
      * @returns {Promise<Record>}
@@ -161,6 +201,44 @@ export class RecordsTag extends TagAbstract {
 
         try {
             const response = await this.httpClient.request<Record>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
+     * Updates up to 10 records, or upserts them when performUpsert is set.
+     *
+     * @returns {Promise<BulkUpdateResponse>}
+     * @throws {ClientException}
+     */
+    public async updateAll(baseId: string, tableIdOrName: string, payload: BulkUpdateRequest): Promise<BulkUpdateResponse> {
+        const url = this.parser.url('/v0/:baseId/:tableIdOrName', {
+            'baseId': baseId,
+            'tableIdOrName': tableIdOrName,
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'PATCH',
+            params: this.parser.query({
+            }, [
+            ]),
+            data: payload
+        };
+
+        try {
+            const response = await this.httpClient.request<BulkUpdateResponse>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
