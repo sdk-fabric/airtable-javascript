@@ -10,6 +10,7 @@ import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {MetaTag} from "./MetaTag";
 import {RecordsTag} from "./RecordsTag";
+import {FieldsTag} from "./FieldsTag";
 
 export class Client extends ClientAbstract {
     public meta(): MetaTag
@@ -23,6 +24,14 @@ export class Client extends ClientAbstract {
     public records(): RecordsTag
     {
         return new RecordsTag(
+            this.httpClient,
+            this.parser
+        );
+    }
+
+    public fields(): FieldsTag
+    {
+        return new FieldsTag(
             this.httpClient,
             this.parser
         );
