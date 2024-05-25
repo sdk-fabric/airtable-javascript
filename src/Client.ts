@@ -11,7 +11,8 @@ import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 import {MetaTag} from "./MetaTag";
 import {RecordsTag} from "./RecordsTag";
 import {FieldsTag} from "./FieldsTag";
-import {TableTag} from "./TableTag";
+import {TablesTag} from "./TablesTag";
+import {CommentsTag} from "./CommentsTag";
 
 export class Client extends ClientAbstract {
     public meta(): MetaTag
@@ -38,9 +39,17 @@ export class Client extends ClientAbstract {
         );
     }
 
-    public table(): TableTag
+    public tables(): TablesTag
     {
-        return new TableTag(
+        return new TablesTag(
+            this.httpClient,
+            this.parser
+        );
+    }
+
+    public comments(): CommentsTag
+    {
+        return new CommentsTag(
             this.httpClient,
             this.parser
         );

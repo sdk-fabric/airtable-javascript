@@ -6,5 +6,5 @@
 export interface Record {
     id?: string
     createdTime?: string
-    fields?: Record<string, any>
+    fields?: globalThis.Record<string, any>
 }
