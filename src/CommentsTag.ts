@@ -10,10 +10,12 @@ import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 import {Comment} from "./Comment";
 import {CommentCollection} from "./CommentCollection";
 import {CommentDeleteResponse} from "./CommentDeleteResponse";
+import {ErrorException} from "./ErrorException";
 
 export class CommentsTag extends TagAbstract {
     /**
      * @returns {Promise<CommentCollection>}
+     * @throws {ErrorExceptionException}
      * @throws {ClientException}
      */
     public async getAll(baseId: string, tableIdOrName: string, recordId: string): Promise<CommentCollection> {
@@ -39,6 +41,14 @@ export class CommentsTag extends TagAbstract {
                 throw error;
             } else if (axios.isAxiosError(error) && error.response) {
                 switch (error.response.status) {
+                    case 400:
+                        throw new ErrorException(error.response.data);
+                    case 403:
+                        throw new ErrorException(error.response.data);
+                    case 404:
+                        throw new ErrorException(error.response.data);
+                    case 500:
+                        throw new ErrorException(error.response.data);
                     default:
                         throw new UnknownStatusCodeException('The server returned an unknown status code');
                 }
@@ -50,6 +60,7 @@ export class CommentsTag extends TagAbstract {
 
     /**
      * @returns {Promise<Comment>}
+     * @throws {ErrorExceptionException}
      * @throws {ClientException}
      */
     public async create(baseId: string, tableIdOrName: string, recordId: string, payload: Comment): Promise<Comment> {
@@ -76,6 +87,14 @@ export class CommentsTag extends TagAbstract {
                 throw error;
             } else if (axios.isAxiosError(error) && error.response) {
                 switch (error.response.status) {
+                    case 400:
+                        throw new ErrorException(error.response.data);
+                    case 403:
+                        throw new ErrorException(error.response.data);
+                    case 404:
+                        throw new ErrorException(error.response.data);
+                    case 500:
+                        throw new ErrorException(error.response.data);
                     default:
                         throw new UnknownStatusCodeException('The server returned an unknown status code');
                 }
@@ -87,6 +106,7 @@ export class CommentsTag extends TagAbstract {
 
     /**
      * @returns {Promise<Comment>}
+     * @throws {ErrorExceptionException}
      * @throws {ClientException}
      */
     public async update(baseId: string, tableIdOrName: string, recordId: string, rowCommentId: string, payload: Comment): Promise<Comment> {
@@ -114,6 +134,14 @@ export class CommentsTag extends TagAbstract {
                 throw error;
             } else if (axios.isAxiosError(error) && error.response) {
                 switch (error.response.status) {
+                    case 400:
+                        throw new ErrorException(error.response.data);
+                    case 403:
+                        throw new ErrorException(error.response.data);
+                    case 404:
+                        throw new ErrorException(error.response.data);
+                    case 500:
+                        throw new ErrorException(error.response.data);
                     default:
                         throw new UnknownStatusCodeException('The server returned an unknown status code');
                 }
@@ -125,6 +153,7 @@ export class CommentsTag extends TagAbstract {
 
     /**
      * @returns {Promise<CommentDeleteResponse>}
+     * @throws {ErrorExceptionException}
      * @throws {ClientException}
      */
     public async delete(baseId: string, tableIdOrName: string, recordId: string, rowCommentId: string): Promise<CommentDeleteResponse> {
@@ -151,6 +180,14 @@ export class CommentsTag extends TagAbstract {
                 throw error;
             } else if (axios.isAxiosError(error) && error.response) {
                 switch (error.response.status) {
+                    case 400:
+                        throw new ErrorException(error.response.data);
+                    case 403:
+                        throw new ErrorException(error.response.data);
+                    case 404:
+                        throw new ErrorException(error.response.data);
+                    case 500:
+                        throw new ErrorException(error.response.data);
                     default:
                         throw new UnknownStatusCodeException('The server returned an unknown status code');
                 }
