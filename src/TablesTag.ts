@@ -7,6 +7,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {ErrorException} from "./ErrorException";
 import {Table} from "./Table";
 
 export class TablesTag extends TagAbstract {
@@ -14,6 +15,7 @@ export class TablesTag extends TagAbstract {
      * Creates a new table and returns the schema for the newly created table.
      *
      * @returns {Promise<Table>}
+     * @throws {ErrorExceptionException}
      * @throws {ClientException}
      */
     public async create(baseId: string, payload: Table): Promise<Table> {
@@ -38,6 +40,14 @@ export class TablesTag extends TagAbstract {
                 throw error;
             } else if (axios.isAxiosError(error) && error.response) {
                 switch (error.response.status) {
+                    case 400:
+                        throw new ErrorException(error.response.data);
+                    case 403:
+                        throw new ErrorException(error.response.data);
+                    case 404:
+                        throw new ErrorException(error.response.data);
+                    case 500:
+                        throw new ErrorException(error.response.data);
                     default:
                         throw new UnknownStatusCodeException('The server returned an unknown status code');
                 }
@@ -49,6 +59,7 @@ export class TablesTag extends TagAbstract {
 
     /**
      * @returns {Promise<Table>}
+     * @throws {ErrorExceptionException}
      * @throws {ClientException}
      */
     public async update(baseId: string, tableIdOrName: string, payload: Table): Promise<Table> {
@@ -74,6 +85,14 @@ export class TablesTag extends TagAbstract {
                 throw error;
             } else if (axios.isAxiosError(error) && error.response) {
                 switch (error.response.status) {
+                    case 400:
+                        throw new ErrorException(error.response.data);
+                    case 403:
+                        throw new ErrorException(error.response.data);
+                    case 404:
+                        throw new ErrorException(error.response.data);
+                    case 500:
+                        throw new ErrorException(error.response.data);
                     default:
                         throw new UnknownStatusCodeException('The server returned an unknown status code');
                 }
