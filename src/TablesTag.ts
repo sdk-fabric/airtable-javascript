@@ -15,7 +15,7 @@ export class TablesTag extends TagAbstract {
      * Creates a new table and returns the schema for the newly created table.
      *
      * @returns {Promise<Table>}
-     * @throws {ErrorExceptionException}
+     * @throws {ErrorException}
      * @throws {ClientException}
      */
     public async create(baseId: string, payload: Table): Promise<Table> {
@@ -26,6 +26,9 @@ export class TablesTag extends TagAbstract {
         let params: AxiosRequestConfig = {
             url: url,
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             params: this.parser.query({
             }, [
             ]),
@@ -39,18 +42,25 @@ export class TablesTag extends TagAbstract {
             if (error instanceof ClientException) {
                 throw error;
             } else if (axios.isAxiosError(error) && error.response) {
-                switch (error.response.status) {
-                    case 400:
-                        throw new ErrorException(error.response.data);
-                    case 403:
-                        throw new ErrorException(error.response.data);
-                    case 404:
-                        throw new ErrorException(error.response.data);
-                    case 500:
-                        throw new ErrorException(error.response.data);
-                    default:
-                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                const statusCode = error.response.status;
+
+                if (statusCode === 400) {
+                    throw new ErrorException(error.response.data);
                 }
+
+                if (statusCode === 403) {
+                    throw new ErrorException(error.response.data);
+                }
+
+                if (statusCode === 404) {
+                    throw new ErrorException(error.response.data);
+                }
+
+                if (statusCode === 500) {
+                    throw new ErrorException(error.response.data);
+                }
+
+                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
             } else {
                 throw new ClientException('An unknown error occurred: ' + String(error));
             }
@@ -58,8 +68,10 @@ export class TablesTag extends TagAbstract {
     }
 
     /**
+     * Updates the name and/or description of a table. At least one of name or description must be specified.
+     *
      * @returns {Promise<Table>}
-     * @throws {ErrorExceptionException}
+     * @throws {ErrorException}
      * @throws {ClientException}
      */
     public async update(baseId: string, tableIdOrName: string, payload: Table): Promise<Table> {
@@ -71,6 +83,9 @@ export class TablesTag extends TagAbstract {
         let params: AxiosRequestConfig = {
             url: url,
             method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             params: this.parser.query({
             }, [
             ]),
@@ -84,18 +99,25 @@ export class TablesTag extends TagAbstract {
             if (error instanceof ClientException) {
                 throw error;
             } else if (axios.isAxiosError(error) && error.response) {
-                switch (error.response.status) {
-                    case 400:
-                        throw new ErrorException(error.response.data);
-                    case 403:
-                        throw new ErrorException(error.response.data);
-                    case 404:
-                        throw new ErrorException(error.response.data);
-                    case 500:
-                        throw new ErrorException(error.response.data);
-                    default:
-                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                const statusCode = error.response.status;
+
+                if (statusCode === 400) {
+                    throw new ErrorException(error.response.data);
                 }
+
+                if (statusCode === 403) {
+                    throw new ErrorException(error.response.data);
+                }
+
+                if (statusCode === 404) {
+                    throw new ErrorException(error.response.data);
+                }
+
+                if (statusCode === 500) {
+                    throw new ErrorException(error.response.data);
+                }
+
+                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
             } else {
                 throw new ClientException('An unknown error occurred: ' + String(error));
             }
