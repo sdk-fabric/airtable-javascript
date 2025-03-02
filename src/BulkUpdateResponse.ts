@@ -4,8 +4,10 @@
  */
 
 import {Record} from "./Record";
+
 export interface BulkUpdateResponse {
     createdRecords?: Array<string>
     updatedRecords?: Array<string>
     records?: Array<Record>
 }
+

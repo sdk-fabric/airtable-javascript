@@ -3,13 +3,13 @@
  * {@link https://sdkgen.app}
  */
 
-import axios, {AxiosRequestConfig} from "axios";
-import {TagAbstract} from "sdkgen-client"
+import {TagAbstract, HttpRequest} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {BulkUpdateRequest} from "./BulkUpdateRequest";
 import {BulkUpdateResponse} from "./BulkUpdateResponse";
 import {DeleteResponse} from "./DeleteResponse";
+import {Error} from "./Error";
 import {ErrorException} from "./ErrorException";
 import {Record} from "./Record";
 import {RecordCollection} from "./RecordCollection";
@@ -28,7 +28,7 @@ export class RecordsTag extends TagAbstract {
             'tableIdOrName': tableIdOrName,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -50,38 +50,18 @@ export class RecordsTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<RecordCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as RecordCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Retrieve a single record. Any "empty" fields (e.g. "", [], or false) in the record will not be returned.
      *
@@ -96,7 +76,7 @@ export class RecordsTag extends TagAbstract {
             'recordId': recordId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -106,38 +86,18 @@ export class RecordsTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<Record>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as Record;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Creates multiple records. Note that table names and table ids can be used interchangeably. We recommend using table IDs so you don't need to modify your API request when your table name changes.
      *
@@ -151,7 +111,7 @@ export class RecordsTag extends TagAbstract {
             'tableIdOrName': tableIdOrName,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'POST',
             headers: {
@@ -163,38 +123,18 @@ export class RecordsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<RecordCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as RecordCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Updates a single record. Table names and table ids can be used interchangeably. We recommend using table IDs so you don't need to modify your API request when your table name changes.
      *
@@ -209,7 +149,7 @@ export class RecordsTag extends TagAbstract {
             'recordId': recordId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'PUT',
             headers: {
@@ -221,38 +161,18 @@ export class RecordsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<Record>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as Record;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Updates up to 10 records, or upserts them when performUpsert is set.
      *
@@ -266,7 +186,7 @@ export class RecordsTag extends TagAbstract {
             'tableIdOrName': tableIdOrName,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'PUT',
             headers: {
@@ -278,38 +198,18 @@ export class RecordsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<BulkUpdateResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as BulkUpdateResponse;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Updates a single record. Table names and table ids can be used interchangeably. We recommend using table IDs so you don't need to modify your API request when your table name changes.
      *
@@ -324,7 +224,7 @@ export class RecordsTag extends TagAbstract {
             'recordId': recordId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'PATCH',
             headers: {
@@ -336,38 +236,18 @@ export class RecordsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<Record>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as Record;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Updates up to 10 records, or upserts them when performUpsert is set.
      *
@@ -381,7 +261,7 @@ export class RecordsTag extends TagAbstract {
             'tableIdOrName': tableIdOrName,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'PATCH',
             headers: {
@@ -393,42 +273,23 @@ export class RecordsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<BulkUpdateResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as BulkUpdateResponse;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Deletes a single record
      *
      * @returns {Promise<DeleteResponse>}
+     * @throws {ErrorException}
      * @throws {ClientException}
      */
     public async delete(baseId: string, tableIdOrName: string, recordId: string): Promise<DeleteResponse> {
@@ -438,7 +299,7 @@ export class RecordsTag extends TagAbstract {
             'recordId': recordId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'DELETE',
             headers: {
@@ -448,21 +309,19 @@ export class RecordsTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<DeleteResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as DeleteResponse;
         }
+
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
     }
+
 
 
 }

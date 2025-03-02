@@ -4,7 +4,9 @@
  */
 
 import {Comment} from "./Comment";
+
 export interface CommentCollection {
     offset?: string
     records?: Array<Comment>
 }
+

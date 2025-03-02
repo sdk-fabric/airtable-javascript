@@ -4,7 +4,9 @@
  */
 
 import {CommentAuthor} from "./CommentAuthor";
+
 export interface CommentReaction {
     emoji?: string
     reactingUser?: CommentAuthor
 }
+

@@ -3,10 +3,10 @@
  * {@link https://sdkgen.app}
  */
 
-import axios, {AxiosRequestConfig} from "axios";
-import {TagAbstract} from "sdkgen-client"
+import {TagAbstract, HttpRequest} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Error} from "./Error";
 import {ErrorException} from "./ErrorException";
 import {Field} from "./Field";
 
@@ -24,7 +24,7 @@ export class FieldsTag extends TagAbstract {
             'tableId': tableId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'POST',
             headers: {
@@ -36,38 +36,18 @@ export class FieldsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<Field>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as Field;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Updates the name and/or description of a field. At least one of name or description must be specified.
      *
@@ -82,7 +62,7 @@ export class FieldsTag extends TagAbstract {
             'columnId': columnId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'PATCH',
             headers: {
@@ -94,37 +74,19 @@ export class FieldsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<Field>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as Field;
         }
+
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
     }
+
 
 
 }

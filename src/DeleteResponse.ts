@@ -7,3 +7,4 @@ export interface DeleteResponse {
     deleted?: boolean
     id?: string
 }
+

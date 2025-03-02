@@ -3,13 +3,13 @@
  * {@link https://sdkgen.app}
  */
 
-import axios, {AxiosRequestConfig} from "axios";
-import {TagAbstract} from "sdkgen-client"
+import {TagAbstract, HttpRequest} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {Comment} from "./Comment";
 import {CommentCollection} from "./CommentCollection";
 import {DeleteResponse} from "./DeleteResponse";
+import {Error} from "./Error";
 import {ErrorException} from "./ErrorException";
 
 export class CommentsTag extends TagAbstract {
@@ -27,7 +27,7 @@ export class CommentsTag extends TagAbstract {
             'recordId': recordId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -37,38 +37,18 @@ export class CommentsTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<CommentCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as CommentCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Creates a comment on a record. User mentioned is supported.
      *
@@ -83,7 +63,7 @@ export class CommentsTag extends TagAbstract {
             'recordId': recordId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'POST',
             headers: {
@@ -95,38 +75,18 @@ export class CommentsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<Comment>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as Comment;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Updates a comment on a record. API users can only update comments they have created. User mentioned is supported.
      *
@@ -142,7 +102,7 @@ export class CommentsTag extends TagAbstract {
             'rowCommentId': rowCommentId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'PATCH',
             headers: {
@@ -154,38 +114,18 @@ export class CommentsTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<Comment>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as Comment;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Deletes a comment from a record. Non-admin API users can only delete comments they have created. Enterprise Admins can delete any comment from a record.
      *
@@ -201,7 +141,7 @@ export class CommentsTag extends TagAbstract {
             'rowCommentId': rowCommentId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'DELETE',
             headers: {
@@ -211,37 +151,19 @@ export class CommentsTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<DeleteResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                if (statusCode === 400) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 403) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 404) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                if (statusCode === 500) {
-                    throw new ErrorException(error.response.data);
-                }
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as DeleteResponse;
         }
+
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorException(await response.json() as Error);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
     }
+
 
 
 }

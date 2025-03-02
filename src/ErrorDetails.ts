@@ -7,3 +7,4 @@ export interface ErrorDetails {
     type?: string
     message?: string
 }
+

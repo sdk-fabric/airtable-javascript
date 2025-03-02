@@ -4,6 +4,7 @@
  */
 
 import {CommentAuthor} from "./CommentAuthor";
+
 export interface Comment {
     id?: string
     createdTime?: string
@@ -13,3 +14,4 @@ export interface Comment {
     reactions?: string
     author?: CommentAuthor
 }
+

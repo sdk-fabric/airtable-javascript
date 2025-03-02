@@ -4,7 +4,9 @@
  */
 
 import {Record} from "./Record";
+
 export interface RecordCollection {
     offset?: string
     records?: Array<Record>
 }
+

@@ -4,9 +4,11 @@
  */
 
 import {Record} from "./Record";
+
 export interface BulkUpdateRequest {
     performUpsert?: Array<string>
     returnFieldsByFieldId?: boolean
     typecast?: boolean
     records?: Array<Record>
 }
+

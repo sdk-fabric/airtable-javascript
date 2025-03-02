@@ -4,6 +4,7 @@
  */
 
 import {FieldOptions} from "./FieldOptions";
+
 export interface Field {
     id?: string
     type?: string
@@ -11,3 +12,4 @@ export interface Field {
     description?: string
     options?: FieldOptions
 }
+

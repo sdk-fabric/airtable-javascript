@@ -4,6 +4,7 @@
  */
 
 import {Field} from "./Field";
+
 export interface Table {
     id?: string
     primaryFieldId?: string
@@ -11,3 +12,4 @@ export interface Table {
     description?: string
     fields?: Array<Field>
 }
+

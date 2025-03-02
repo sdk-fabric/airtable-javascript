@@ -4,6 +4,8 @@
  */
 
 import {ErrorDetails} from "./ErrorDetails";
+
 export interface Error {
     error?: ErrorDetails
 }
+

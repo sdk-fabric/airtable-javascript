@@ -8,3 +8,4 @@ export interface Record {
     createdTime?: string
     fields?: globalThis.Record<string, any>
 }
+

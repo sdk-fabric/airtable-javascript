@@ -3,4 +3,6 @@
  * {@link https://sdkgen.app}
  */
 
-export type FieldOptions = Record<string, any>;
+export interface FieldOptions extends Record<string, any> {
+}
+
